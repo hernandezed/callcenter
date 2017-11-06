@@ -6,17 +6,14 @@ import com.callcenter.domain.Call;
 import com.callcenter.domain.Customer;
 import com.callcenter.domain.Operator;
 import com.utils.CallUtils;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Thread.class)
 public class CallDispatcherTest {
 
     private CallDispatcher callDispatcher;
@@ -37,18 +34,17 @@ public class CallDispatcherTest {
     }
 
     @Test
-    public void adispatchCall_onlyOneCall_attendsAnOperator() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(10);
+    public void dispatchCall_withTenCall_attendsAllOperator() throws InterruptedException, ExecutionException {
         CallDispatcher callDispatcher = new CallDispatcher(EmployeeUtils.buildBasicCallCenter());
-
-        List<Call> calls = CallUtils.makeTenCalls();
-        for (Call call : calls) {
-            callDispatcher.dispatchCall(call);
+        List<Future<Call>> inProcessCalls = new ArrayList<>();
+        List<Call> calls = new ArrayList<>();
+        for (Call call : CallUtils.makeTenCalls()) {
+            inProcessCalls.add(callDispatcher.dispatchCall(call));
         }
-        latch.await();
-        assertThat(calls.get(0)).hasNoNullFieldsOrProperties();
-        assertThat(calls.get(0).getEmployee()).isInstanceOf(Operator.class);
-        assertThat(calls.get(0).getDuration()).isBetween(5, 10);
+        for (Future<Call> inProcessCall : inProcessCalls) {
+            calls.add(inProcessCall.get());
+        }
+        assertThat(calls).hasSize(10).doesNotContainNull();
     }
 
 }
