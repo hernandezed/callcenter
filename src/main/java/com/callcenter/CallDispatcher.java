@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CallDispatcher {
 
     Semaphore operatorsSemaphore;
-    PriorityBlockingQueue<Employee> freeOperatorQueue = EmployeeUtils.buildBasicCallCenter();
+    PriorityBlockingQueue<Employee> freeOperatorQueue;
     AtomicInteger callCounter;
     ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -29,31 +29,28 @@ public class CallDispatcher {
     }
 
     public Future<Call> dispatchCall(Call call) {
-        return executorService.submit(new Callable<Call>() {
-            @Override
-            public Call call() throws Exception {
-                int duration = ThreadLocalRandom.current().nextInt(1, 2);
-                call.setDuration(duration);
-                try {
-                    System.out.println(call.getCustomer().getName() + " is waiting to speak to the operator whit phone number " + call.getCustomer().getPhone());
-                    operatorsSemaphore.acquire();
-                    Employee employee = (Employee) freeOperatorQueue.remove();
-                    call.setEmployee(employee);
-                    call.setOrder(callCounter.addAndGet(1));
-
-                    System.out.println(call.getCustomer().getName() + " is getting the connection to the operator.");
-
-                    Thread.sleep(TimeUnit.SECONDS.toMillis(duration));
-
-                    System.out.println(call);
-                    freeOperatorQueue.add(employee);
-                    operatorsSemaphore.release();
-                    executorService.shutdown();
-                } catch (InterruptedException e) {
-                    System.err.println(e);
-                }
-                return call;
+        return executorService.submit(() -> {
+            int duration = ThreadLocalRandom.current().nextInt(5, 10);
+            call.setDuration(duration);
+            try {
+                System.out.println(call.getCustomer().getName() + " is waiting to speak to the operator whit phone number " + call.getCustomer().getPhone());
+                operatorsSemaphore.acquire();
+                Employee employee = (Employee) freeOperatorQueue.remove();
+                call.setEmployee(employee);
+                call.setOrder(callCounter.addAndGet(1));
+                
+                System.out.println(call.getCustomer().getName() + " is getting the connection to the operator.");
+                
+                Thread.sleep(TimeUnit.SECONDS.toMillis(duration));
+                
+                System.out.println(call);
+                freeOperatorQueue.add(employee);
+                operatorsSemaphore.release();
+                executorService.shutdown();
+            } catch (InterruptedException e) {
+                System.err.println(e);
             }
+            return call;
         });
     }
 

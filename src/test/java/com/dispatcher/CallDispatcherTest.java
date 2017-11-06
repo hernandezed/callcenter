@@ -1,11 +1,11 @@
 package com.dispatcher;
 
 import com.callcenter.CallDispatcher;
-import com.callcenter.EmployeeUtils;
 import com.callcenter.domain.Call;
 import com.callcenter.domain.Customer;
 import com.callcenter.domain.Operator;
 import com.utils.CallUtils;
+import com.utils.EmployeeUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;

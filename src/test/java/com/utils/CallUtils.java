@@ -2,7 +2,6 @@ package com.utils;
 
 import com.callcenter.domain.Call;
 import com.callcenter.domain.Customer;
-import com.callcenter.domain.CustomerUtils;
 import java.util.ArrayList;
 import java.util.List;
 

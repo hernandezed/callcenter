@@ -1,9 +1,9 @@
-package com.callcenter;
+package com.utils;
 
 import com.callcenter.comparator.EmployeePriorityComparator;
-import com.callcenter.domain.Operator;
 import com.callcenter.domain.Director;
 import com.callcenter.domain.Employee;
+import com.callcenter.domain.Operator;
 import com.callcenter.domain.Supervisor;
 import java.util.concurrent.PriorityBlockingQueue;
 
