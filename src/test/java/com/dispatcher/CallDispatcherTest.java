@@ -1,6 +1,6 @@
 package com.dispatcher;
 
-import com.callcenter.CallDispatcher;
+import com.callcenter.dispatcher.CallDispatcher;
 import com.callcenter.domain.Call;
 import com.callcenter.domain.Customer;
 import com.callcenter.domain.Operator;

@@ -1,4 +1,4 @@
-package com.callcenter;
+package com.callcenter.dispatcher;
 
 import com.callcenter.domain.Call;
 import com.callcenter.domain.Employee;
