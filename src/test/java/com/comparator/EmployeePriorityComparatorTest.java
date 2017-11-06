@@ -1,4 +1,4 @@
-package com.callcenter.comparator;
+package com.comparator;
 
 import com.callcenter.comparator.EmployeePriorityComparator;
 import com.callcenter.domain.Director;

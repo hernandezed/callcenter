@@ -1,21 +1,13 @@
 package com.callcenter.domain;
 
-public class Call implements Runnable {
+public class Call {
 
-    private Customer customer;
     private Employee employee;
+    private Customer customer;
     private int duration;
+    private int order;
 
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
+    public Call(Customer customer) {
         this.customer = customer;
     }
 
@@ -23,16 +15,41 @@ public class Call implements Runnable {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public int getDuration() {
         return duration;
     }
 
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder summary = new StringBuilder("Summary from call number ")
+                .append(order).append("\n")
+                .append("Customer: ").append(customer.toString()).append("\n")
+                .append("Employee: ").append(employee.getName());
+        return summary.toString();
     }
 
 }

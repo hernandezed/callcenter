@@ -7,9 +7,4 @@ public class Director extends Employee {
         this.priority = 3;
     }
 
-    @Override
-    public void attend(Call call) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }
